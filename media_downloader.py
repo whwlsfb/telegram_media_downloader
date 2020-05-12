@@ -52,7 +52,7 @@ def _get_media_meta(
         fileName = media_obj.file_name
         if media_obj.file_name == None:
             file_format: str = media_obj.mime_type.split("/")[-1]
-            fileName = "video_{}.{}".format(
+            fileName = "{}.{}".format(
                 media_obj.date, file_format
             )
         file_name = os.path.join(THIS_DIR, _type, fileName)
