@@ -14,6 +14,7 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 f = open(os.path.join(THIS_DIR, "config.yaml"))
 config = yaml.safe_load(f)
+print(config)
 f.close()
 
 
@@ -41,13 +42,20 @@ def _get_media_meta(
             THIS_DIR,
             _type,
             "voice_{}.{}".format(
-                dt.utcfromtimestamp(media_obj.date).isoformat(), file_format
+                media_obj.date, file_format
             ),
         )
     elif _type == "photo":
+        print()
         file_name = os.path.join(THIS_DIR, _type, "")
     else:
-        file_name = os.path.join(THIS_DIR, _type, media_obj.file_name)
+        fileName = media_obj.file_name
+        if media_obj.file_name == None:
+            file_format: str = media_obj.mime_type.split("/")[-1]
+            fileName = "video_{}.{}".format(
+                media_obj.date, file_format
+            )
+        file_name = os.path.join(THIS_DIR, _type, fileName)
     return file_ref, file_name
 
 
