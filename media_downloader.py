@@ -94,7 +94,7 @@ def download_media(
         chat_id, offset_id=last_read_message_id, reverse=True
     )
     last_message_id: int = 0
-    for message in messages:
+    for message in messages: 
         if message.media:
             for _type in media_types:
                 _media = getattr(message, _type, None)
@@ -105,6 +105,8 @@ def download_media(
                     )
                     logger.info("Media downloaded - %s", download_path)
         last_message_id = message.message_id
+        config["last_read_message_id"] = last_message_id + 1
+        update_config(config)
     return last_message_id
 
 
@@ -136,8 +138,9 @@ def begin_import():
         config["media_types"],
     )
     client.stop()
-    config["last_read_message_id"] = last_id + 1
-    update_config(config)
+    if last_id > config["last_read_message_id"]:
+        config["last_read_message_id"] = last_id + 1
+        update_config(config)
 
 
 if __name__ == "__main__":
